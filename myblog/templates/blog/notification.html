@@ -1,0 +1,108 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div class="container fs notifs">
+    <h1 class="text-center">Notifications</h1>
+    <div class="list-group">
+        {% if noti %}
+            {% for note in noti %}
+            {% if note.sender != request.user %}
+                {% if note.notification_type == 1 %}
+                    <a href="{% url 'blog' note.post.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <img class="note-thumb" src="{{note.post.thumbnail.url}}">
+                        {% if note.sender.profile.image %}  
+                            <img class="note-img" src="{{note.sender.profile.image.url}}">
+                        {% else %}
+                            <div id="profileImg">
+                                <div id="name">
+                                    {{note.sender.username.0}}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="d-inline-flex justify-content-between">
+                            <p class="mb-1 ml-1"><b>{{note.sender}}</b> Liked Your Post {{note.post.title}}
+                                <br><small>{{note.date|naturaltime}}</small>
+                            </p>
+                        </div>
+                    </a>
+                {% elif note.notification_type == 2 %}
+                    <a href="{% url 'blog' note.post.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <img class="note-thumb" src="{{note.post.thumbnail.url}}">
+                        {% if note.sender.profile.image %}  
+                            <img class="note-img" src="{{note.sender.profile.image.url}}">
+                        {% else %}
+                            <div id="profileImg">
+                                <div id="name">
+                                    {{note.sender.username.0}}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="d-inline-flex justify-content-between">
+                            <p class="mb-1 ml-1"><b>{{note.sender}}</b> Commented on Your Post {{note.post.title}}
+                                 <br><small>{{note.date|naturaltime}}</small>
+                             </p>
+                        </div>
+                    </a>
+                {% elif note.notification_type == 3 %}
+                    <a href="{% url 'profile' note.sender.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        {% if note.sender.profile.image %}  
+                            <img class="note-img" src="{{note.sender.profile.image.url}}">
+                        {% else %}
+                            <div id="profileImg">
+                                <div id="name">
+                                    {{note.sender.username.0}}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="d-inline-flex justify-content-between">
+                            <p class="mb-1 ml-1"><b>{{note.sender}}</b> Started Following You
+                                 <br><small>{{note.date|naturaltime}}</small>
+                             </p>
+                        </div>
+                    </a>
+                {% elif note.notification_type == 4 %}
+                    <a href="{% url 'blog' note.post.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <img class="note-thumb" src="{{note.post.thumbnail.url}}">
+                        {% if note.sender.profile.image %}  
+                            <img class="note-img" src="{{note.sender.profile.image.url}}">
+                        {% else %}
+                            <div id="profileImg">
+                                <div id="name">
+                                    {{note.sender.username.0}}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="d-inline-flex justify-content-between">
+                            <p class="mb-1 ml-1"><b>{{note.sender}}</b> Added New Post {{note.post.title}}
+                                 <br><small>{{note.date|naturaltime}}</small>
+                             </p>
+                        </div>
+                    </a>
+                {% elif note.notification_type == 5 %}
+                    <a href="{% url 'blog' note.post.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <img class="note-thumb" src="{{note.post.thumbnail.url}}">
+                        {% if note.sender.profile.image %}  
+                            <img class="note-img" src="{{note.sender.profile.image.url}}">
+                        {% else %}
+                            <div id="profileImg">
+                                <div id="name">
+                                    {{note.sender.username.0}}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="d-inline-flex justify-content-between">
+                            <p class="mb-1 ml-1"><b>{{note.sender}}</b> Updated a Post {{note.post.title}}
+                                 <br><small>{{note.date|naturaltime}}</small>
+                             </p>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+        {% else %}
+            <h2 class="text-center">No Notifications yet</h2>
+        {% endif %}
+      </div>
+</div>
+{% endblock content %}

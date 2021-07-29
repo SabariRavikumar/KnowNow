@@ -1,0 +1,421 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% load humanize %}
+{% load num_numerize %}
+{% load hitcount_tags %}
+{% block content %}
+{% load social_share %}
+{% if not user.is_authenticated %}
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#signup" role="tab" aria-controls="pills-home" aria-selected="true">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#login" role="tab" aria-controls="pills-profile" aria-selected="false">Log In</a>
+                    </li>
+                  </ul>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Subscribe to our mailing list to get the latest updates straight in your inbox.</p>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="signup" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="login-clean">
+                            <form data-aos="fade-left" method="POST" action="{% url 'register' %}" style="margin:0px; box-shadow: none;" novalidate>
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+                                <div class="form-group">
+                                    <div class="input-icon" data-aos="fade-left" data-aos-delay="800">
+                                        <label class="label-icon">
+                                            <i class="fa fa-user"></i>
+                                        </label>
+                                        {% if form.username.errors %}
+                                            <input class='form-control error' type='text' name='username' placeholder='Username'>
+                                            <div class="invalid-feedback">
+                                                {% for error in form.username.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='text' name='username' placeholder='Username'>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                                        <label class="label-icon">
+                                            <i class="fa fa-envelope"></i>
+                                        </label>
+                                        {% if form.email.errors %}
+                                            <input class='form-control error' type='email' name='email' placeholder='Email'>
+                                            <div class="invalid-feedback">
+                                                {% for error in form.email.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='email' name='email' placeholder='Email'>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                                        <label class="label-icon">
+                                            <i class="fa fa-lock"></i>
+                                        </label>
+                                        <span class="eye" onclick="hide('password','hide1','hide2')">
+                                            <i id="hide1" class="fa fa-eye"></i>
+                                            <i id="hide2" class="fa fa-eye-slash"></i>
+                                        </span>
+                                        {% if form.password1.errors %}
+                                            <input id="password" class='form-control error' type='password' name='password1' placeholder='Password'>
+                                            <div class="invalid-feedback">
+                                                {% for error in form.password1.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input id="password" class='form-control' type='password' name='password1' placeholder='Password'>
+                                        {% endif %}
+                                    </div>
+                                    <div id="message">
+                                        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                        <p id="number" class="invalid">A <b>number</b></p>
+                                        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-icon" data-aos="fade-left" data-aos-delay="1400">
+                                        <label class="label-icon">
+                                            <i class="fa fa-lock"></i>
+                                        </label>
+                                        <span class="eye" onclick="hide('con_password','hide3','hide4')">
+                                            <i id="hide3" class="fa fa-eye"></i>
+                                            <i id="hide4" class="fa fa-eye-slash"></i>
+                                        </span>
+                                        {% if form.password2.errors %}
+                                            <input  id="con_password" class='form-control error' type='password' name='password2' placeholder='Confirm Password'>
+                                            <div class="invalid-feedback">
+                                                {% for error in form.password2.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                                <input id="con_password" class='form-control' type='password' name='password2' placeholder='Confirm password'>
+                                            {% endif %}
+                                        </div>        
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-icon">
+                                            <input class='btn btn-block' type='submit' name='submit'>
+                                        </div> 
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="pills-profile-tab">
+                            <div class="login-clean">
+                                <form data-aos="fade-left" action="/login/?next={{ request.path }}" style="margin: 0px; box-shadow: none;" data-aos-delay="600" method="post" novalidate>
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                                            <label class="label-icon">
+                                                <i class="fa fa-user"></i>
+                                            </label>
+                                            {% if form.username.errors %}
+                                                <input class='form-control error' type='text' name='username' placeholder='Username'>
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.username.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                <input class='form-control' type='text' name='username' placeholder='Username'>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                                            <label class="label-icon">
+                                                <i class="fa fa-lock"></i>
+                                            </label>
+                                            <span class="eye" onclick="hide('password','hide1','hide2')">
+                                                <i id="hide1" class="fa fa-eye"></i>
+                                                <i id="hide2" class="fa fa-eye-slash"></i>
+                                            </span>
+                                            {% if form.password.errors %}
+                                                <input id="password" class='form-control error' type='password' name='password' placeholder='Password'>
+                                                <div class="invalid-feedback">
+                                                    {% for error in form.password.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                <input id="password" class='form-control' type='password' name='password' placeholder='Password'>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div data-aos="fade-left" data-aos-delay="1400">
+                                            <input class='btn btn-block' type='submit' value="Log In" name='Login'>
+                                        </div> 
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="container fs">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1 text-center">{{post.title}}</h1>
+                    <!-- Post meta content-->
+                    <div class="intro">
+                        <p class="text-center">
+                            <span class="by">by</span> 
+                            <a href="{% url 'profile' post.author.pk %}">{{ post.author }}</a>
+                            <span class="date"><i class="fa fa-calendar" aria-hidden="true"></i> {{ post.date_posted|date:"b d, Y" }} </span>
+                            <span class="date"><i class="fa fa-heart" style='color:#eb3b60;' aria-hidden="true"></i> {% round_number post.likes.count %} Likes</span>
+                            <span class="date"><i class="fa fa-eye" aria-hidden="true"></i> {% get_hit_count for post %} Views</span>
+                        </p>
+                        {% if user.is_authenticated %}
+                            {% if user.id == post.author.id %}
+                                <a class="btn btn-info action-button" role="button" href="{% url 'update_post' post.pk %}">Update post</a>
+                                <a class="btn btn-danger action-button" role="button" href="{% url 'delete_post' post.pk %}">Delete post</a>
+                            {% else %}
+                                <ul style='margin-top:50px;' class="d-flex justify-content-center">
+                                    <li style="margin-right:10px;">
+                                        {% if user.is_authenticated %}
+                                            <form action="{% url 'like_post' post.pk %}" method="POST">
+                                                {% csrf_token %}
+                                                    {% if liked %}
+                                                        <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-heart fa-lg" aria-hidden="true"></i> <strong>Liked</strong></button>
+                                                    {% else %} 
+                                                        <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-heart-o fa-lg" aria-hidden="true"></i> <strong>Like</strong></button>
+                                                    {% endif %}
+                                            </form>
+                                        {% endif %}
+                                    </li>
+                                    <li style="margin-right: 10px;">
+                                        {% if user.is_authenticated and post.author.id is not request.user.id %}
+                                            <form action="{% url 'follow_user' post.author.pk %}" method="POST">
+                                                {% csrf_token %}
+                                                    {% if followed %}
+                                                    <button class='follow-btn' type="submit", name='profile_id', value="{{ post.author.pk }}", class='btn btn-sm'><strong>Following</strong></button>
+                                                    {% else %}
+                                                    <button class='follow-btn' type="submit", name='profile_id', value="{{ post.author.pk }}", class='btn btn-sm'><strong>Follow</strong></button>
+                                                    {% endif %}
+                                            </form>
+                                        {% endif %}
+                                    </li>
+                                    <li style="margin-right:10px;">
+                                        {% if user.is_authenticated %}
+                                        <form action="{% url 'fav_post' post.pk %}" method="POST">
+                                            {% csrf_token %}
+                                                {% if added %}
+                                                    <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-star fa-lg" aria-hidden="true"></i> <strong>Added  to Favourite</strong></button>
+                                                {% else %} 
+                                                    <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-star-o fa-lg" aria-hidden="true"></i> <strong>Add to Favourite</strong></button>
+                                                {% endif %}
+                                        </form>
+                                    {% endif %}
+                                    </li>
+                                </ul>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4"><img class="img-fluid" width="100%;" src="{{post.thumbnail.url}}" alt="..." /></figure>
+                <!-- Post content-->
+                <section class="mb-5">
+                    {{post.content|safe}}
+                </section>
+            </article>
+            <ul style='margin-top:50px;' class="d-flex justify-content-center">
+                <li style="margin-right:10px;">
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'like_post' post.pk %}" method="POST">
+                            {% csrf_token %}
+                                {% if liked %}
+                                    <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-heart fa-lg" aria-hidden="true"></i> <strong>Liked</strong></button>
+                                {% else %} 
+                                    <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-heart-o fa-lg" aria-hidden="true"></i> <strong>Like</strong></button>
+                                {% endif %}
+                        </form>
+                    {% endif %}
+                </li>
+                {% if user.id is not post.author.id %}
+                    <li style="margin-right: 10px;">
+                        {% if user.is_authenticated and post.author.id is not request.user.id %}
+                            <form action="{% url 'follow_user' post.author.pk %}" method="POST">
+                                {% csrf_token %}
+                                    {% if followed %}
+                                    <button class='follow-btn' type="submit", name='profile_id', value="{{ post.author.pk }}", class='btn btn-sm'><strong>Following</strong></button>
+                                    {% else %}
+                                    <button class='follow-btn' type="submit", name='profile_id', value="{{ post.author.pk }}", class='btn btn-sm'><strong>Follow</strong></button>
+                                    {% endif %}
+                            </form>
+                        {% endif %}
+                    </li>
+                    <li style="margin-right:10px;">
+                        {% if user.is_authenticated %}
+                        <form action="{% url 'fav_post' post.pk %}" method="POST">
+                            {% csrf_token %}
+                                {% if added %}
+                                    <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-star fa-lg" aria-hidden="true"></i> <strong>Added  to Favourite</strong></button>
+                                {% else %} 
+                                    <button type="submit", name='post_id', value="{{ post.id }}", class='btn btn-sm'><i style="color:#eb3b60" class="fa fa-star-o fa-lg" aria-hidden="true"></i> <strong>Add to Favourite</strong></button>
+                                {% endif %}
+                        </form>
+                    {% endif %}
+                    </li>
+                {% endif %}
+            </ul>
+            <p class="text-center">Share now </p>
+            <ul class="d-flex justify-content-center">
+                <li style="margin-right:10px; height: 0;">
+                    {% post_to_facebook object_or_url "" "btn" %}
+                </li>
+                <li style="margin-right: 10px;">
+                    {% post_to_twitter "{{post.title}}" object_or_url "" "btn" %}
+                </li>
+                <li style="margin-right:10px;">
+                    {% post_to_linkedin object_or_url "btn" %}                
+                </li>
+                <li style="margin-right:10px;">
+                    {% post_to_whatsapp object_or_url "" "btn" %}
+                    </li>
+            </ul>
+            <!-- Comments section-->
+            <section class="mb-5" id="comments">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Comment form-->
+                        {% if user.is_authenticated %}  
+                        <form method="POST" action="{% url 'blog' post.pk %}">
+                            {% csrf_token %}
+                            <h3 class="pull-left">New Comment</h3>
+                            <fieldset>
+                                <div class="row frm">
+                                    <div class="col-sm-2">
+                                        {% if request.user.profile.image %}  
+                                            <img class="img-responsive" src="{{request.user.profile.image.url}}" alt="">
+                                        {% else %}
+                                            <div id="profileImg">
+                                                <div id="name">
+                                                    {{user.username.0}}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group col-sm-9 col-lg-10" style="right:60px;">
+                                        <textarea class="form-control" name="body" placeholder="Add Comment" required=""></textarea>
+                                    </div>
+                                    <input type="hidden" name='name' value='{{user.id}}'>
+                                    <div class="form-group col-sm-10" >
+                                        <button type="submit"  class="btn btn-sm reply-btn">Add Comment</button>	
+                                    </div>
+                                </div>  
+                            </fieldset>
+                        </form>
+                    {% else %}
+                    <form method="POST" action="{% url 'blog' post.pk %}">
+                        {% csrf_token %}
+                        <h3 class="pull-left">New Comment</h3>
+                        <fieldset>
+                            <div class="row frm">
+                                <div class="col-sm-3 col-lg-2 hidden-xs">
+                                    <img class="img-responsive" src="{% static 'blog/img/default.jpg' %}" alt="">
+                                </div>
+                                <div class="form-group col-sm-12 col-sm-9 col-lg-10" style="top:10px; right:60px;">
+                                    <a href="/login/?next={{ request.path }}" style="text-decoration: none;">
+                                        <textarea class="form-control" name="body" placeholder="Add Comment" required=""></textarea>
+                                    </a>    
+                                </div>
+                                <input type="hidden" name='name' value='{{user.id}}'>
+                                <div class="form-group col-sm-20 col-lg-10" >
+                                    <button type="submit"  class="btn btn-sm reply-btn">Add Comment</button>	
+                                </div>
+                            </div>  
+                        </fieldset>
+                    </form>
+                    {% endif %}
+                    <h3>{% round_number post.comments.count %} Comments</h3>                        
+                            {% if not post.comments.all %}
+                                <p>No comments yet</p>  
+                            {% else %}
+                                {% for comment in post.comments.all %}
+                                    <div class="d-flex mt-5 media">
+                                        <a class="pull-left" href="#">
+                                            {% if comment.name.profile.image %}  
+                                            <img class="media-object" src="{{comment.name.profile.image.url}}" alt="">
+                                            {% else %}
+                                                <div id="profileImg">
+                                                    <div id="name">
+                                                        {{comment.name.username.0}}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading">{{comment.name}}</h4>
+                                            <p style="width:60vw">
+                                                {{comment.body}}
+                                            </p>
+                                            <ul style="margin-top:10px;" class="list-unstyled list-inline media-detail pull-left d-inline-flex">
+                                                <li style='text-transform: uppercase;'>
+                                                    <i class="fa fa-clock-o" aria-hidden="true"></i>{{comment.date|naturaltime  }}
+                                                </li>                       
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Most Popular posts of <a href="{% url 'profile' post.author.pk %}">{{post.author}}</a></div>
+                <div class="card-body">
+                    <ul style="padding: 0px;">
+                        {% for a_post in post_filter %}
+                            {% if not a_post.pk == post.pk %}
+                                <li><a class="nav-link" href="{% url 'blog' a_post.pk %}">{{a_post.title}}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">Similar posts</div>
+                <div class="card-body">
+                    <ul style="padding: 0px;">
+                        {% for post in similar_post %}
+                            <li><a class="nav-link" href="{% url 'blog' post.pk %}">{{post.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock content %}

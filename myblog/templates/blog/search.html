@@ -1,0 +1,175 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% load hitcount_tags %}
+{% load num_numerize %}
+
+{% block content %}
+<div class="container fs">
+    <h1 class='text-center'>Search Result</h1>  
+    {% if posts and usr %}                  
+        <div class="scroll-card-body">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade show active" id="all">
+                    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#posts" role="tab" aria-controls="pills-home" aria-selected="true">Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#users" role="tab" aria-controls="pills-profile" aria-selected="false">Users</a>
+                        </li>
+                    </ul>
+                    <div class="container">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row">
+                                    {% for post in posts %}
+                                    <div class="col-md-3">
+                                        <a href="{% url 'blog' post.pk %}">
+                                            <div class="single-blog">
+                                                <!-- <p class="blog-meta">
+                                                    By: <a href="{% url 'profile' post.author.id %}">{{ post.author }}</a> 
+                                                    <span>{{ post.date_posted|date:"b d,Y" }}</span>
+                                                </p> -->
+                                                <img class="thumb" src="{{ post.thumbnail.url }}">
+                                                <ul class="d-inline-flex mt-2" style="padding-left: 0px;">
+                                                    <li>
+                                                        {% if post.author.profile.image %}  
+                                                            <img class="note-img" src="{{post.author.profile.image.url}}">
+                                                        {% else %}
+                                                            <div id="profileImg">
+                                                                <div id="name">
+                                                                    {{post.author.username.0}}
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    </li>
+                                                    <li>
+                                                        <h2>
+                                                            <a href="{% url 'blog' post.pk %}" id="head" data-toggle="tooltip" data-placement="left" title="{{post.title}}">
+                                                                <b>{{post.title}}</b>
+                                                            </a>
+                                                            <a href="{% url 'profile' post.author.id %}">{{post.author}}</a>
+                                                            <br>
+                                                            <span>
+                                                                <i class="fa fa-heart" style="color: #eb3b60;" aria-hidden="true"></i> {% round_number post.likes.count %} | <i class="fa fa-eye"></i> {% get_hit_count for post %} | <span style="text-transform: capitalize;">{{ post.date_posted|date:"b d,Y" }}</span>
+                                                            </span>
+                                                        </h2>
+                                                    </li>
+                                                </ul>
+                                                <!-- <a href="{% url 'profile' post.author.id %}">{{post.author}}</a> -->
+                                                <!-- <p class="blog-text">{{post.author}}</p> -->
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="team-boxed">
+                                        <div class="row people">
+                                            {% for user in usr %}
+                                            <div class="col-md-3 col-lg-4 item">
+                                                <div class="box">
+                                                    {% if user.profile.image %}
+                                                        <img class="rounded-circle" src="{{user.profile.image.url}}">
+                                                    {% else %}
+                                                        <div class="rounded-circle" >
+                                                            <div id="name1">
+                                                                {{user.username.0}}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <h3 class="name">{{user.username}}</h3>
+                                                    <p class="description">{%if user.profile.about%}{{user.profile.about}}{% else %}Knownow User{%endif%}</p>
+                                                    <div class="social">
+                                                        <a class="follow-btn" type="button" href="{% url 'profile' user.id %}">View Profile</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                </div> 
+            </div>
+        </div>
+    {% elif posts %}
+        <div class="container">
+            <div class="row">
+                {% for post in posts %}
+                <div class="col-md-3">
+                    <a href="{% url 'blog' post.pk %}">
+                        <div class="single-blog">
+                            <!-- <p class="blog-meta">
+                                By: <a href="{% url 'profile' post.author.id %}">{{ post.author }}</a> 
+                                <span>{{ post.date_posted|date:"b d,Y" }}</span>
+                            </p> -->
+                            <img class="thumb" src="{{ post.thumbnail.url }}">
+                            <ul class="d-inline-flex mt-2" style="padding-left: 0px;">
+                                <li>
+                                    {% if post.author.profile.image %}  
+                                        <img class="note-img" src="{{post.author.profile.image.url}}">
+                                    {% else %}
+                                        <div id="profileImg">
+                                            <div id="name">
+                                                {{post.author.username.0}}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <h2>
+                                        <a href="{% url 'blog' post.pk %}" id="head" data-toggle="tooltip" data-placement="left" title="{{post.title}}">
+                                            <b>{{post.title}}</b>
+                                        </a>
+                                        <a href="{% url 'profile' post.author.id %}">{{post.author}}</a>
+                                        <br>
+                                        <span>
+                                            <i class="fa fa-heart" style="color: #eb3b60;" aria-hidden="true"></i> {% round_number post.likes.count %} | <i class="fa fa-eye"></i> {% get_hit_count for post %} | <span style="text-transform: capitalize;">{{ post.date_posted|date:"b d,Y" }}</span>
+                                        </span>
+                                    </h2>
+                                </li>
+                            </ul>
+                            <!-- <a href="{% url 'profile' post.author.id %}">{{post.author}}</a> -->
+                            <!-- <p class="blog-text">{{post.author}}</p> -->
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% elif usr %}
+        <div class="container">
+            <div class="team-boxed">
+                <div class="row people">
+                    {% for user in usr %}
+                    <div class="col-md-3 col-lg-4 item">
+                        <div class="box">
+                            {% if user.profile.image %}
+                                <img class="rounded-circle" src="{{user.profile.image.url}}">
+                            {% else %}
+                                <div class="rounded-circle" >
+                                    <div id="name1">
+                                        {{user.username.0}}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <h3 class="name">{{user.username}}</h3>
+                            <p class="description">{%if user.profile.about%}{{user.profile.about}}{% else %}Knownow User{%endif%}</p>
+                            <div class="social">
+                                <a class="follow-btn" type="button" href="{% url 'profile' user.id %}">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h2 class='text-center'>No blogs found</h2>
+    {% endif %}
+</div>
+
+{% endblock %}

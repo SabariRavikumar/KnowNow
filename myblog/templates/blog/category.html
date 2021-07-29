@@ -1,0 +1,111 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% load humanize %}
+{% load num_numerize %}
+{% load hitcount_tags %}
+{% block content %}
+<div class="container fs">
+    {% if cat_post %}
+        <h1 class='text-center' style="text-transform: capitalize; font-size: 70px; margin-bottom: 0px;">{{title}}</h1>  
+        <form class="text-center md-4" action="{% url 'fav_cat' title %}" method="POST">
+            {% csrf_token %}
+                {% if added %}
+                    <button type="submit", name='cat', value="{{ title }}", class='btn btn-lg md-4'><i style="color:#eb3b60" class="fa fa-star fa-lg" aria-hidden="true"></i> Added to Favourite</button>
+                {% else %} 
+                    <button type="submit", name='cat', value="{{ title }}", class='btn btn-lg md-4'><i style="color:#eb3b60" class="fa fa-star-o fa-lg" aria-hidden="true"></i> Add to Favourite</button>
+                {% endif %}
+        </form>
+        <div class="scroll-card-body">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade show active" id="all">
+                    <div class="container">
+                        <!-- {% if page_obj.paginator.num_pages > 1 %}
+                            <div class="paginate">
+                                {% if page_obj.has_previous %}
+                                    <p>
+                                        <a class="previous"  href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </p>
+                                {% endif %}
+                                {% if page_obj.has_next %}
+                                    <p>
+                                        <a class="next" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </p>
+                                {% endif %}
+                                <p class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </p>
+                            </div>
+                        {% endif %} -->
+                        <div class="row" style="border-top: 2px solid #2c2c2c;">
+                            <!-- {% for usr in fav_cat_user %}
+                                <h1>{{usr.user}}</h1>
+                            {% endfor %} -->
+                            {% for post in cat_post %}
+                                <div class="col-md-3">
+                                    <a href="{% url 'blog' post.pk %}">
+                                        <div class="single-blog">
+                                            <!-- <p class="blog-meta">
+                                                By: <a href="{% url 'profile' post.author.id %}">{{ post.author }}</a> 
+                                                <span>{{ post.date_posted|date:"b d,Y" }}</span>
+                                            </p> -->
+                                            <img class="thumb" src="{{ post.thumbnail.url }}">
+                                            <ul class="d-inline-flex mt-2" style="padding-left: 0px;">
+                                                <li>
+                                                    {% if post.author.profile.image %}  
+                                                        <img class="note-img" src="{{post.author.profile.image.url}}">
+                                                    {% else %}
+                                                        <div id="profileImg">
+                                                            <div id="name">
+                                                                {{post.author.username.0}}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </li>
+                                                <li>
+                                                    <h2>
+                                                        <a id="head" href="{% url 'blog' post.pk %}" data-toggle="tooltip" data-placement="left" title="{{post.title}}">
+                                                            <b>{{post.title}}</b>
+                                                        </a>
+                                                        <a href="{% url 'profile' post.author.id %}">{{post.author}}</a>
+                                                        <br>
+                                                        <span>
+                                                            <i class="fa fa-heart" style="color: #eb3b60;" aria-hidden="true"></i> {% round_number post.likes.count %} | <i class="fa fa-eye"></i> {% get_hit_count for post %} | <span style="text-transform: capitalize;">{{ post.date_posted|date:"b d,Y" }}</span>
+                                                        </span>
+                                                    </h2>
+                                                </li>
+                                            </ul>
+                                            <!-- <a href="{% url 'profile' post.author.id %}">{{post.author}}</a> -->
+                                            <!-- <p class="blog-text">{{post.author}}</p> -->
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                            
+                        </div>
+                        <!-- {% if page_obj.paginator.num_pages > 1 %}
+                            <div class="paginate">
+                                {% if page_obj.has_previous %}
+                                    <p>
+                                        <a class="previous"  href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                                    </p>
+                                {% endif %}
+                                {% if page_obj.has_next %}
+                                    <p>
+                                        <a class="next" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </p>
+                                {% endif %}
+                                <p class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </p>
+                            </div>
+                        {% endif %} -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h2 class='text-center'>No blogs found in this category<br>Be first to <a href="{% url 'addpost' %}" style='color: #f4476b;'> Add Blog</a> in this category</h2>
+    {% endif %}
+</div>
+
+{% endblock %}

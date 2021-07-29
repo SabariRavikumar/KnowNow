@@ -1,0 +1,60 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+<div class="login-clean">
+    <form data-aos="fade-left" style="max-width: 320px;" data-aos-delay="600" method="post" novalidate>
+        {% csrf_token %}
+        <div class="illustration">
+            <h2>                    
+                <i class="fa fa-user"></i>
+                Log In
+            </h2>        
+        </div>
+        <div class="form-group">
+    
+            <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                <label class="label-icon">
+                    <i class="fa fa-user"></i>
+                </label>
+                {% if form.username.errors %}
+                    <input class='form-control error' type='text' name='username' placeholder='Username'>
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <input class='form-control' type='text' name='username' placeholder='Username'>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                <label class="label-icon">
+                    <i class="fa fa-lock"></i>
+                </label>
+                <span class="eye" onclick="hide('password','hide1','hide2')">
+                    <i id="hide1" class="fa fa-eye"></i>
+                    <i id="hide2" class="fa fa-eye-slash"></i>
+                </span>
+                {% if form.password.errors %}
+                    <input id="password" class='form-control error' type='password' name='password' placeholder='Password'>
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <input id="password" class='form-control' type='password' name='password' placeholder='Password'>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div data-aos="fade-left" data-aos-delay="1400">
+                <input class='btn btn-block' type='submit' value="Log In" name='Login'>
+            </div> 
+        </div>
+        <a class="float-left forgot" href="{% url 'reset_password' %}">Forgot Password?</a>
+        <a class="float-right forgot" href="{% url 'register' %}">Sign Up!</a></form>
+</div>
+{% endblock content %}

@@ -1,0 +1,224 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+<div class="profile-page" style='margin-top:250px;'> 
+    <div class="main main-raised">
+        <div class="profile-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 ml-auto mr-auto">
+                        <div class="profile">
+                            <div class="avatar">
+                                {% if user.profile.image %}  
+                                    <img  alt="Circle Image" class="img-raised rounded-circle" src="{{user.profile.image.url }}">                                    
+                                {% else %}
+                                    <div class="img-raised rounded-circle">
+                                        <div id="name1">
+                                            {{user.username.0}}
+                                        </div>
+                                    </div>  
+                                {% endif %}                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 ml-auto mr-auto">
+                        <div class="login-clean">
+                            <form style="max-width:100vw; margin-top: 0; box-shadow:none;" enctype="multipart/form-data" method="post" novalidate data-aos="fade-left" data-aos-delay="800">
+                                {% csrf_token %}
+                                <div class="illustration" >
+                                    <h2>                    
+                                        <i class="fa fa-pencil"></i>
+                                        Edit Profile
+                                    </h2>        
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-user"></i>
+                                        </label>
+                                        {% if u_form.username.errors %}
+                                            <input class='form-control error' type='text' name='username' value="{{user.username}}" placeholder='Username'>
+                                            <div class="invalid-feedback">
+                                                {% for error in u_form.username.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='text' name='username' value="{{user.username}}" placeholder='Username'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-envelope"></i>
+                                        </label>
+                                        {% if u_form.email.errors %}
+                                            <input class='form-control error' type='email' name='email' value="{{user.email}}" placeholder='Email'>
+                                            <div class="invalid-feedback">
+                                                {% for error in u_form.email.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='email' name='email' value="{{user.email}}" placeholder='Email'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-info"></i>
+                                        </label>
+                                        {% if p_form.about.errors %}
+                                            <input class='form-control error' type='text' name='about' value="{{user.profile.about}}" placeholder='About You'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.about.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='text' name='about' value="{{user.profile.about}}" placeholder='About You'>
+                                        {% endif %}    
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-facebook"></i>
+                                        </label>
+                                        {% if p_form.fb.errors %}
+                                            <input class='form-control error' type='url' name='fb' value="{{user.profile.fb|default_if_none:''}}" placeholder='Your Facebook Profile'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.fb.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='url' name='fb' value="{{user.profile.fb|default_if_none:''}}" placeholder='Your Facebook Profile'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-instagram"></i>
+                                        </label>
+                                        {% if p_form.insta.errors %}
+                                            <input class='form-control error' type='url' name='insta' value="{{user.profile.insta|default_if_none:''}}" placeholder='Your Instagram Profile'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.insta.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='url' name='insta' value="{{user.profile.insta|default_if_none:''}}" placeholder='Your Instagram Profile'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-linkedin"></i>
+                                        </label>
+                                        {% if p_form.linkedin.errors %}
+                                            <input class='form-control error' type='url' name='linkedin' value="{{user.profile.linkedin|default_if_none:''}}" placeholder='Your Linked In Profile'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.linkedin.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='url' name='linkedin' value="{{user.profile.linkedin|default_if_none:''}}" placeholder='Your Linked In Profile'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-twitter"></i>
+                                        </label>
+                                        {% if p_form.twitter.errors %}
+                                            <input class='form-control error' type='url' name='twitter' value="{{user.profile.twitter|default_if_none:''}}" placeholder='Your Twitter Profile'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.twitter.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='url' name='twitter' value="{{user.profile.twitter|default_if_none:''}}" placeholder='Your Twitter Profile'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-globe"></i>
+                                        </label>
+                                        {% if p_form.website.errors %}
+                                            <input class='form-control error' type='url' name='website' value="{{user.profile.website|default_if_none:''}}" placeholder='Your Website'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.website.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='url' name='website' value="{{user.profile.website|default_if_none:''}}" placeholder='Your Website'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="input-icon">
+                                        <label class="label-icon">
+                                            <i class="fa fa-github"></i>
+                                        </label>
+                                        {% if p_form.git.errors %}
+                                            <input class='form-control error' type='url' name='git' value="{{user.profile.git|default_if_none:''}}" placeholder='Your Github Profile'>
+                                            <div class="invalid-feedback">
+                                                {% for error in p_form.git.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <input class='form-control' type='url' name='git' value="{{user.profile.git|default_if_none:''}}" placeholder='Your Github Profile'>
+                                        {% endif %}
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <a class='btn btn-block' href="{% url 'password' %}" name="password">Change Password</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-icon">
+                                            <label  for="id_image" class="btn btn-block">
+                                                <span><i class="fa fa-upload" aria-hidden="true"></i> Add Profile Image</span>
+                                            </label>
+                                            <input type="file" name="image" accept="image/*" id="id_image">                                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-icon">
+                                            <label  for="id_cover_img" class="btn btn-block">
+                                                <span><i class="fa fa-upload" aria-hidden="true"></i> Add Cover Image</span>
+                                            </label>
+                                            <input type="file" name="cover_img" accept="cover_img/*" id="id_cover_img">                                                
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class='btn btn-block' href="{% url 'delete_user' request.user.id %}">Delete Account</a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input class='btn btn-block' type='submit' value="Save" name='Login'>
+                                    </div> 
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

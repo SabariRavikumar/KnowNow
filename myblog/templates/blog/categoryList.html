@@ -1,0 +1,30 @@
+{% extends 'blog/index.html' %}
+{% block content %}
+<div class="container fs">
+    <div class="team-grid">
+        <div class="container">
+            <div class="intro">
+                <h1 class="text-center mb-4" style="font-size: 70px; font-weight: bolder;">Categories</h1>
+            </div>
+            <div class="row people" style="border-top: 2px solid #2c2c2c;">
+                {% for category in cat %}
+                <a class="col-md-4 col-lg-4 item" href="{% url 'cat' category %}">
+                    <div class="box" style="background-image:url({{category.cat_img.url}})">
+                        <div class="cover2 align-items-center d-flex justify-content-center">
+                            <h1 class="name" style="font-size:60px;">{{category.cat_name}}</h1>                   
+                        </div>
+                    </div>
+                </a> 
+                {% endfor %}
+                <a class="col-md-4 col-lg-4 item" href="{% url 'addcat' %}">
+                    <div class="box" style="background:#776c6c;">
+                        <div class="cover2 align-items-center d-flex justify-content-center">
+                            <h1 class="name" style="font-size:60px;"><i class="fa fa-plus"></i><br>Add Category</h1>                   
+                        </div>
+                    </div>
+                </a> 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

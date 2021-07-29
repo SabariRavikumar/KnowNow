@@ -1,0 +1,43 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="login-clean container">
+    <form data-aos="fade-left" enctype="multipart/form-data" data-aos-delay="600" method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6" style="margin-left:2px;"> 
+                <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                    <label  class="label-icon">
+                        <i class="fa fa-list-alt"></i>
+                    </label>
+                    {% if form.cat_name.errors %}
+                        <input class='form-control error' style="max-width:100%; width:80vw;" type='text' name='cat_name' placeholder=' Add category'>
+                        <div class="invalid-feedback">
+                            {% for error in form.cat_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <input class='form-control' style="min-width:80vw; width:100%;" type='text' name='cat_name' placeholder=' Add Category'>
+                    {% endif %}
+                </div>
+                <div class="input-icon">
+                    <label  for="id_cat_img" class="btn btn-block">
+                        <span><i class="fa fa-upload" aria-hidden="true"></i> Add Category Image</span>
+                    </label>
+                    <input type="file" name="cat_img" accept="image/*" id="id_cat_img">                                                
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <div class="form-actions" data-aos="fade-left">
+                    <button style="width:100px; margin-top:10px;" type="submit" class="btn btn-default">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

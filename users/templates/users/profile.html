@@ -1,0 +1,263 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% load num_numerize %}
+{% block content %}
+    <div class="profile-page" style='margin-top:25px;'> 
+        <div class="page-header">
+            {% if user.profile.cover_img %}
+                <img src="{{ user.profile.cover_img.url }}">
+            {% endif %}
+        </div>
+        <div class="main main-raised">
+            <div class="profile-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 ml-auto mr-auto">
+                            <div class="profile">
+                                <div class="avatar">
+                                    {% if user.profile.image %}  
+                                        <img  alt="Circle Image" class="img-raised rounded-circle" src="{{user.profile.image.url }}">                                    
+                                    {% else %}
+                                    <div class="img-raised rounded-circle">
+                                            <div id="name1">
+                                                {{user.username.0}}
+                                            </div>
+                                    </div>  
+                                    {% endif %}
+                                </div>
+                                <div class="name">
+                                    <h3 class="title">{{user.username}}</h3>
+                                    {% if not user.pk == request.user.id %}
+                                        <h4 class="profile-page description" style="font-weight: bolder;">Email<a href="mailto:{{user.email}}" class="nav-link">{{user.email}}</a></h4>
+                                    {% endif %}
+                                    {% if user.profile.about == 'None'%}
+                                    {% else %}
+                                        <p class='profile-page description' style='text-transform:uppercase;'>{{user.profile.about}}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description text-center">
+                        {% if user.is_authenticated and user.pk == request.user.id %}
+                        <a class='follow-btn' href="{% url 'edit_profile' %}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i> Edit profile
+                        </a>                                        
+                        {% else %}
+                        <p class='nav justify-content-center'>
+                            {% if user.profile.fb %}
+                                <a class="nav-link" href="{{user.profile.fb}}" target="_blank"><i class="fa fa-facebook"></i></a>
+                            {% endif %}
+                            {% if user.profile.insta %}
+                                <a class="nav-link" href="{{user.profile.insta}}" target="_blank"><i class="fa fa-instagram"></i></a>
+                            {% endif %}
+                            {% if user.profile.linkedin %}
+                                <a class="nav-link" href="{{user.profile.linkedin}}" target="_blank"><i class="fa fa-linkedin"></i></a>
+                            {% endif %}
+                            {% if user.profile.twitter %}
+                                <a class="nav-link" href="{{user.profile.twitter}}" target="_blank"><i class="fa fa-twitter"></i></a>
+                            {% endif %}
+                            {% if user.profile.website %}
+                                <a class="nav-link" href="{{user.profile.website}}" target="_blank"><i class="fa fa-globe"></i></a>
+                            {% endif %}
+                        </p>
+                            <form action="{% url 'follow_user' user.pk %}" method="POST">
+                                {% csrf_token %}
+                                    {% if followed %}
+                                    <button type="submit", name='profile_id', value="{{ user.pk }}", class='follow-btn btn-sm'><strong>Following</strong></button>
+                                    {% else %}
+                                    <button type="submit", name='profile_id', value="{{ user.pk }}", class='follow-btn btn-sm'><strong>Follow</strong></button>
+                                    {% endif %}
+                            </form>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 ml-auto mr-auto">
+                            <div class="profile-tabs">
+                                <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#posts" role="tab" data-toggle="tab">
+                                            <i>{% round_number total_post %}</i>
+                                            Posts
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#followers" role="tab" data-toggle="tab">
+                                            <i>{% round_number total_followers %}</i>
+                                            followers
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#following" role="tab" data-toggle="tab">
+                                            <i>{% round_number total_following %}</i>
+                                            following
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#fav_post" role="tab" data-toggle="tab">
+                                            <i>{% round_number fav_post.count %}</i>
+                                            Favourite Post
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+            <div class="tab-content tab-space">
+                <div class="tab-pane active text-center gallery" id="posts">
+                    <div class="row">
+                        {% if post_list %}
+                            <div class="col-md-12">
+                                <div class="team-boxed">
+                                    <div class="container">
+                                        <div class="intro">
+                                            <h2 class="text-center">Posts </h2>
+                                        </div>
+                                            <div class="row people">
+                                                {% for post in post_list %}
+                                                    <div class="col-md-6 col-lg-4 item">
+                                                        <div class="box"><img class="thumbnail" src="{{post.thumbnail.url}}">
+                                                            <h3 class="name" data-toggle="tooltip" data-placement="left" title="{{post.title}}">{{post.title}}</h3>
+                                                            <!-- <p class="description">{{post.post_tag}}</p> -->
+                                                            <div class="social">
+                                                                <a class="follow-btn" type="button" href="{% url 'blog' post.pk %}">Read Now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}     
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        {% else %}
+                        <div class="col-md-12">
+                            <h2 class="text-center">No posts Added yet<a class='nav-link rubberBand animated' href="{% url 'addpost' %}">Add Post</a></h2>
+                        </div>
+                        {% endif %}          
+                    </div>
+                </div>
+                <div class="tab-pane text-center gallery" id="followers">
+                    <div class="row">
+                        {% if followers %}
+                            <div class="col-md-12">
+                                <div class="team-boxed">
+                                    <div class="container">
+                                        <div class="intro">
+                                            <h2 class="text-center">Followers </h2>
+                                        </div>
+                                        <div class="row people">
+                                            {% for user in followers %}
+                                            <div class="col-md-6 col-lg-4 item">
+                                                <div class="box">
+                                                    {% if user.profile.image %}
+                                                        <img class="rounded-circle" src="{{user.profile.image.url}}">
+                                                    {% else %}
+                                                        <div class="rounded-circle" >
+                                                            <div id="name1">
+                                                                {{user.username.0}}
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <h3 class="name">{{user.username}}</h3>
+                                                    <p class="description">{%if user.profile.about%}{{user.profile.about}}{% else %}Knownow User{%endif%}</p>
+                                                    <div class="social">
+                                                        <a class="follow-btn" type="button" href="{% url 'profile' user.id %}">View Profile</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-md-12">
+                                <h2 class="text-center">No Followers</h2>
+                            </div>
+                        {% endif %} 
+                    </div>
+                </div>
+                <div class="tab-pane text-center gallery" id="following">
+                    <div class="row">
+                        {% if following %}
+                                <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="team-boxed">
+                                            <div class="container">
+                                                <div class="intro">
+                                                    <h2 class="text-center">Following </h2>
+                                                </div>
+                                                <div class="row people">
+                                                    {% for user in following %}
+                                                    <div class="col-md-6 col-lg-4 item">
+                                                        <div class="box">
+                                                            {% if user.profile.image %}
+                                                                <img class="rounded-circle" src="{{user.profile.image.url}}">
+                                                            {% else %}
+                                                                <div class="rounded-circle" >
+                                                                    <div id="name1">
+                                                                        {{user.username.0}}
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                            <h3 class="name">{{user.username}}</h3>
+                                                            <p class="description">{%if user.profile.about%}{{user.profile.about}}{% else %}Knownow User{%endif%}</p>
+                                                            <div class="social">
+                                                                <a class="follow-btn" type="button" href="{% url 'profile' user.id %}">View Profile</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        {% else %}
+                            <div class="col-md-12">
+                                <h2 class="text-center">No Following</h2>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="tab-pane text-center gallery" id="fav_post">
+                    <div class="row">
+                        {% if fav_post %}
+                            <div class="col-md-12">
+                                <div class="team-boxed">
+                                    <div class="container">
+                                        <div class="intro">
+                                            <h2 class="text-center">Posts </h2>
+                                        </div>
+                                            <div class="row people">
+                                                {% for post in fav_post %}
+                                                    <div class="col-md-6 col-lg-4 item">
+                                                        <div class="box"><img class="thumbnail" src="{{post.thumbnail.url}}">
+                                                            <h3 class="name" data-toggle="tooltip" data-placement="left" title="{{post.title}}">{{post.title}}</h3>
+                                                         
+                                                            <div class="social">
+                                                                <a class="follow-btn" type="button" href="{% url 'blog' post.pk %}">Read Now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}     
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        {% else %}
+                        <div class="col-md-12">
+                            <h2 class="text-center">No posts Added to Favourite</h2>
+                        </div>
+                        {% endif %}          
+                    </div>
+                </div>
+            </div>
+    
+            
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+{% if name %}
+<div class='container fs text-center'>
+    <h1>Thanks {{name}}</h1>
+    <h5>We will look into your mail and come to you soon</h5>
+    <a class="nav-link" href="{% url 'home' %}">Goto Home</a>
+</div>
+
+{% else %}
+    <div class="login-clean">
+        <form data-aos="fade-left" style="max-width: 320px;" data-aos-delay="600" method="post" novalidate>
+            {% csrf_token %}
+            <div class="illustration">
+                <h2>                    
+                    Contact us
+                </h2>        
+            </div>
+            <div class="form-group">
+        
+                <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                    <label class="label-icon">
+                        <i class="fa fa-envelope"></i>
+                    </label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" name="mail" placeholder="Your Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                    <label class="label-icon">
+                        <i class="fa fa-user"></i>
+                    </label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" name="name" placeholder="Your Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                    <label class="label-icon">
+                        <i class="fa fa-pencil"></i>
+                    </label>
+                    <textarea class="form-control" name="message" id="exampleMessage" placeholder="Write Your Message"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div data-aos="fade-left" data-aos-delay="1400">
+                    <input class='btn btn-block' type='submit' value="Send" name='Login'>
+                </div> 
+            </div>
+        </form>
+    </div>
+{% endif %}
+{% endblock content %}

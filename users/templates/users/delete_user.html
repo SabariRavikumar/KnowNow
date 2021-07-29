@@ -1,0 +1,21 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="login-clean container">
+    <form data-aos="fade-left" enctype="multipart/form-data" data-aos-delay="600" method="post" novalidate>
+        {% csrf_token %}
+        <strong>Are you sure you want to delete your account?</strong>
+        <div class="form-group">
+            <div class="form-actions" data-aos="fade-left">
+                <button  type="submit" class="btn btn-danger action-button">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i> Yes, I'am sure 
+                </button>
+                <a href="{% url 'profile' user.id %}" class="btn btn-danger action-button">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i> No,Take me back 
+                </a>
+            </div>
+        </div>
+    </form>
+  </div>
+{% endblock content %}

@@ -1,0 +1,63 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+{% if name %}
+<div class='container fs text-center'>
+    <h1>Thanks {{name}}</h1>
+    <h5>We will look into your mail and come to you soon</h5>
+    <a class="nav-link" href="{% url 'home' %}">Goto Home</a>
+</div>
+
+{% else %}
+    <div class="login-clean">
+        <form data-aos="fade-left" style="max-width: 320px;" data-aos-delay="600" method="post">
+            {% csrf_token %}
+            <div class="illustration">
+                <h2>                    
+                    Join Us
+                </h2>        
+            </div>
+            <div class="form-group">
+        
+                <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                    <label class="label-icon">
+                        <i class="fa fa-envelope"></i>
+                    </label>
+                    {% if form.email.errors %}
+                        <input type="email" class="form-control error" name="email" placeholder="Your Email">
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <input type="email" class="form-control" name="email" placeholder="Your Email">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                    <label class="label-icon">
+                        <i class="fa fa-user"></i>
+                    </label>
+                    {% if form.name.errors %}
+                    <input type="text" class="form-control error" name="name" placeholder="Your Name">
+                        <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    <input type="text" class="form-control"  name="name" placeholder="Your Name">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <div data-aos="fade-left" data-aos-delay="1400">
+                    <input class='btn btn-block' type='submit' value="Join" name='Login'>
+                </div> 
+            </div>
+        </form>
+    </div>
+{% endif %}
+{% endblock content %}

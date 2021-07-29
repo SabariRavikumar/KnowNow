@@ -1,0 +1,108 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+<div class="login-clean">
+    <form data-aos="fade-left" method="POST" style="max-width: 320px;" novalidate>
+        {% csrf_token %}
+        <div class="illustration">
+            <h2>                    
+                <i class="fa fa-address-card"></i>
+                Sign Up
+            </h2>
+        </div>
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+        <div class="form-group">
+            <div class="input-icon" data-aos="fade-left" data-aos-delay="800">
+                <label class="label-icon">
+                    <i class="fa fa-user"></i>
+                </label>
+                {% if form.username.errors %}
+                    <input id="uname" class='form-control error' type='text' name='username' placeholder='Username'>
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <input id="uname" class='form-control' type='text' name='username' placeholder='Username'>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+    
+            <div class="input-icon" data-aos="fade-left" data-aos-delay="1000">
+                <label class="label-icon">
+                    <i class="fa fa-envelope"></i>
+                </label>
+                {% if form.email.errors %}
+                    <input class='form-control error' type='email' name='email' placeholder='Email'>
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <input class='form-control' type='email' name='email' placeholder='Email'>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon" data-aos="fade-left" data-aos-delay="1200">
+                <label class="label-icon">
+                    <i class="fa fa-lock"></i>
+                </label>
+                <span class="eye" onclick="hide('password','hide1','hide2')">
+                    <i id="hide1" class="fa fa-eye"></i>
+                    <i id="hide2" class="fa fa-eye-slash"></i>
+                </span>
+                {% if form.password1.errors %}
+                    <input id="password" class='form-control error' type='password' name='password1' placeholder='Password'>
+                    <div class="invalid-feedback">
+                        {% for error in form.password1.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <input id="password" class='form-control' type='password' name='password1' placeholder='Password'>
+                {% endif %}
+            </div>
+            <div id="message">
+                <p id="username" class="invalid">Password should not be similar to <b>username</b></p>
+                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                <p id="number" class="invalid">A <b>number</b></p>
+                <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon" data-aos="fade-left" data-aos-delay="1400">
+                <label class="label-icon">
+                    <i class="fa fa-lock"></i>
+                </label>
+                <span class="eye" onclick="hide('con_password','hide3','hide4')">
+                    <i id="hide3" class="fa fa-eye"></i>
+                    <i id="hide4" class="fa fa-eye-slash"></i>
+                </span>
+                {% if form.password2.errors %}
+                    <input  id="con_password" class='form-control error' type='password' name='password2' placeholder='Confirm Password'>
+                <div class="invalid-feedback">
+                    {% for error in form.password2.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                    <input id="con_password" class='form-control' type='password' name='password2' placeholder='Confirm password'>
+                {% endif %}
+            </div>        
+            <div id="message2">
+                <p id="con_pass" class="invalid">Password should be same as the previous field</b></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-icon">
+                <input class='btn btn-block' type='submit' name='submit'>
+            </div> 
+        </div>
+        <a class="forgot" href="{% url 'login' %}">Alredy have an account !</a></form>
+</div>
+{% endblock content %}
