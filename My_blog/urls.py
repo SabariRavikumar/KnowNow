@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
+from django.views.static import serve
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from users.views import register, logIn, logOut, DeleteUserView, ProfileView, EditProfile, FollowView, PasswordsChangeView
@@ -31,6 +32,8 @@ from users.views import register, logIn, logOut, DeleteUserView, ProfileView, Ed
 urlpatterns = [
     # path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
     #  name='django.contrib.sitemaps.views.sitemap'),
+    re_path(r'^media/(?P<path>.+)$',serve,{'document_root':settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
     path('admin/', admin.site.urls),
     path('register/', register, name='register'),
     path('login/', logIn, name='login'),
@@ -50,5 +53,6 @@ urlpatterns = [
 
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -393,19 +393,19 @@
         <!-- Side widgets-->
         <div class="col-lg-4">
             <!-- Categories widget-->
-            <div class="card mb-4">
-                <div class="card-header">
-                    Most Popular posts of <a href="{% url 'profile' post.author.pk %}">{{post.author}}</a></div>
-                <div class="card-body">
-                    <ul style="padding: 0px;">
-                        {% for a_post in post_filter %}
-                            {% if not a_post.pk == post.pk %}
-                                <li><a class="nav-link" href="{% url 'blog' a_post.pk %}">{{a_post.title}}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Most Popular posts of <a href="{% url 'profile' post.author.pk %}">{{post.author}}</a></div>
+                    <div class="card-body">
+                        <ul style="padding: 0px;">
+                            {% for a_post in post_filter %}
+                                {% if not a_post.pk == post.pk %}
+                                    <li><a class="nav-link" href="{% url 'blog' a_post.pk %}">{{a_post.title}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-            </div>
             <div class="card mb-4">
                 <div class="card-header">Similar posts</div>
                 <div class="card-body">
