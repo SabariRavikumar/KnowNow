@@ -6,8 +6,8 @@ from myblog.models import Category, Post
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default=None,upload_to='profile_pics')
-    cover_img = models.ImageField(default=None,upload_to='cover_pics')
+    image = models.ImageField(default=None,upload_to='profile_pics',blank=True)
+    cover_img = models.ImageField(default=None,upload_to='cover_pics',blank=True)
     about = models.TextField(User)
     fb = models.URLField(max_length=255,null=True, blank=True,default="")
     insta = models.URLField(max_length=255,null=True, blank=True)

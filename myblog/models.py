@@ -11,7 +11,7 @@ from taggit.managers import TaggableManager
 
 class Category(models.Model):
     cat_name = models.CharField(max_length=255,unique=True)
-    cat_img = models.ImageField(default='default_thumb.jpg',upload_to='category')
+    cat_img = models.ImageField(default='default_thumb.jpg',upload_to='category',blank=True)
     cat_view = GenericRelation(HitCount, object_id_field='object_pk', related_query_name='hit_count_generic_relation')
     
     def __str__(self):
@@ -21,7 +21,7 @@ class Category(models.Model):
         return reverse('home')
 
 class Post(models.Model):
-    thumbnail = models.ImageField(default='default_thumb.jpg',upload_to='thumbnail')
+    thumbnail = models.ImageField(default='default_thumb.jpg',upload_to='thumbnail',blank=True)
     title = models.CharField(max_length=255)
     post_tag = TaggableManager()
     cat = models.CharField(Category,max_length=100, default="None")
