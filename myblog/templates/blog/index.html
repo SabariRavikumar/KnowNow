@@ -52,8 +52,10 @@
                     <img src="{{request.user.profile.image.url }}" class="image--cover" style="margin-right:10px;">
                     <p class='mt-2'>{{request.user.username}}<br>{{request.user.email}}</p>
                   {% else %}
-                    <span id='username'>{{request.user.username.0}}</span>
-                    <div id="profileImage"></div>
+                    <div id="profileImg">
+                      <div id='name'>{{request.user.username.0}}</div>
+                    </div>
+                    <p class='ml-2'>{{request.user.username}}<br>{{request.user.email}}</p>
                   {% endif %}
                 </a>
                 <a class="nav-link" href="{% url 'profile' request.user.id %}">My Profile</a>
