@@ -55,12 +55,17 @@ def Aboutus(request):
         notification = Notification.objects.filter(user=request.user, is_seen=False).order_by('-date') 
     else:
         notification = None  
-    post = Post.objects.all()
+    post = Post.objects.all().count()
     user = User.objects.all()
     cat_tab = Category.objects.all()[:10]
     community = JoinUs.objects.all()
+    if post == 0:
+        pst = 0 
+    else:
+        pst = post.count()
+ 
     context = {
-        'post':post,
+        'post':pst,
         'usr':user,
         'com':community,
         'notification':notification,
